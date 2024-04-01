@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-do</title>
+</head>
+<body>
+  <header>
+    <div id="logo" class="logo header">To do</div>
+  </header>
+  <section class="nav-bar">
+    <div id="nav-bar-wrapper">
+      <button id="home-btn" class="nav-bar">Home</button>
+      <button id="today-btn" class="nav-bar">Today</button>
+      <button id="week-btn" class="nav-bar">This week</button>
+      <div id="projects-wrapper">
+        <p id="projects-title" class="nav-bar">Projects</p>
+      </div>
+      <button id="add-project" class="nav-bar">Add project</button>
+    </div>
+  </section>
+
+  <section class="content">
+    <div id="content-wrapper">
+      <p class="title">Title</p>
+      <button class="content">Add task</button>
+    </div>
+  </section>
+
+  <dialog class="task dialog">
+    <form action="dialog" id="new-task">
+      <fieldset>
+        <legend>New Task</legend>
+        <p>Fill out the information: (all fields required)</p>
+        <label for="title">Title:</label>
+        <input id="title" type="text" required>
+        <label for="details">Details:</label>
+        <textarea id="details" required></textarea>
+        <label for="due">Due date:</label>
+        <input type="date" id="due" required>
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority" required>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button>Add task</button>
+        <button type="button">Cancel</button>
+      </fieldset>
+    </form>
+  </dialog>
+
+  <dialog class="project dialog">
+    <form action="dialog" id="new-project">
+      <fieldset>
+        <legend>New Project</legend>
+        <p>Fill out the information: (all fields required)</p>
+        <label for="title">Title:</label>
+        <input id="title" type="text" required>
+        <button>Add project</button>
+        <button type="button">Cancel</button>
+      </fieldset>
+    </form>
+  </dialog>
+</body>
+</html>

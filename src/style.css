@@ -1,0 +1,54 @@
+body{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  box-sizing: border-box;
+  height: 100vh;
+  margin: 0;
+  padding: 1rem;
+}
+
+header{
+  grid-column: span 2;
+  font-size: 3rem;
+  text-align: center;
+  border: 2px solid black;
+  padding: 1rem;
+}
+
+section.nav-bar{
+  display: grid;
+  width: 300px;
+  padding: 2rem;
+  box-sizing: border-box;
+  border: 2px solid black;
+}
+
+div#nav-bar-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+div#content-wrapper{
+  max-width: 800px;
+  margin: 1rem auto;
+  display: grid;
+}
+
+
+fieldset{
+  width: 300px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+}
+legend + p{
+  grid-column: span 2;
+  margin: 0;
+}
+
+fieldset button{
+  grid-column: span 2;
+}
+
