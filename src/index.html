@@ -17,19 +17,20 @@
       <div id="projects-wrapper">
         <p id="projects-title" class="nav-bar">Projects</p>
       </div>
-      <button id="add-project" class="nav-bar">Add project</button>
+      <button id="add-project" class="nav-bar add button">Add project</button>
     </div>
   </section>
 
   <section class="content">
     <div id="content-wrapper">
       <p class="title">Title</p>
-      <button class="content">Add task</button>
+      <div id="task-container"></div>
+      <button id="add-task" class="task add button">Add task</button>
     </div>
   </section>
 
   <dialog class="task dialog">
-    <form action="dialog" id="new-task">
+    <form method="dialog" id="new-task">
       <fieldset>
         <legend>New Task</legend>
         <p>Fill out the information: (all fields required)</p>
@@ -52,7 +53,7 @@
   </dialog>
 
   <dialog class="project dialog">
-    <form action="dialog" id="new-project">
+    <form method="dialog" id="new-project">
       <fieldset>
         <legend>New Project</legend>
         <p>Fill out the information: (all fields required)</p>
