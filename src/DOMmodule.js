@@ -1,35 +1,70 @@
-const taskDialog = document.querySelector('.task.dialog')
-const addTaskbtn = document.querySelector('#add-task');
-
-function updateHome(array){
-  const contentDiv = document.querySelector('#task-container');
-  contentDiv.innerHTML = '';
-
-  array.forEach(element => {
-    const p = document.createElement('p');
-    p.textContent = element.title; 
-    contentDiv.appendChild(p);
-  });
-
-
-}
-
+import {format} from 'date-fns';
 export { updateHome, init, getNewTask, editTask };
 
+const addTaskDialog = document.querySelector('.task.dialog')
+
+
+function updateHome(array){
+  const taskList = document.querySelector('ul.task-list');
+  taskList.innerHTML = '';
+
+  array.forEach( task => {
+    taskList.appendChild(renderTask(task)); 
+  });
+}
+
+
+
 function renderTask(task){
+  const listItem = document.createElement('li');
   const title = document.createElement('p');
-  const dueDate = document.createElement('p');
+  const dueDate = document.createElement('p'); 
+  const editBtn = document.createElement('button');
+  const deleteBtn = document.createElement('button');
+ 
+  title.setAttribute('class', 'task title');
+  dueDate.setAttribute('class', 'task due-date');
+  editBtn.setAttribute('class', 'task edit-btn');
+  deleteBtn.setAttribute('class', 'task delete-btn');
+  if(task.prio === 'high'){
+    listItem.setAttribute('prio', 'high');
+  }else if(task.prio === 'medium'){
+    listItem.setAttribute('prio', 'medium');
+  }else{
+    listItem.setAttribute('prio', 'low');
+  }
+
+  title.textContent = task.title;
+  dueDate.textContent = task.dueDate;
+  editBtn.textContent = 'Edit';
+  deleteBtn.textContent = 'delete';
+
+
+  listItem.appendChild(title);
+  listItem.appendChild(dueDate);
+  listItem.appendChild(editBtn);
+  listItem.appendChild(deleteBtn);
 
 
 
-  p.textContent = element.title; 
+  return listItem;
 
 }
 
 function init(){
+  const addTaskbtn = document.querySelector('#add-task');
+  const cancelTaskbtn = document.querySelector('button.add.task.cancel');
+  const form = addTaskDialog.querySelector('form');
+
   addTaskbtn.addEventListener('click', () => {
-    taskDialog.showModal();
+    addTaskDialog.showModal();
   });
+
+  cancelTaskbtn.addEventListener('click', () => {
+    addTaskDialog.close();
+    form.reset();
+  })
+
 }
 
 function getNewTask(form){
@@ -37,18 +72,17 @@ function getNewTask(form){
   
   const title = elements[1].value;
   const details = elements[2].value;
-  const date = elements[3].value;
+  const dueDate = format(elements[3].valueAsDate,'dd/MM/yy');
   const prio = elements[4].value;
   
   form.reset();
 
-  return [title, details, date, prio];
+  return [title, details, dueDate, prio];
 }
 
 function editTask(){
-  const title = taskDialog.querySelector('#title');
+  const title = addTaskDialog.querySelector('#title');
   title.setAttribute('value', 'laksdjflkasdljf');
-  taskDialog.showModal();
-  console.log('hey')
+  addTaskDialog.showModal();
 }
 

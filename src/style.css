@@ -36,6 +36,7 @@ div#content-wrapper{
   display: grid;
 }
 
+/* dialog forms */
 
 fieldset{
   width: 300px;
@@ -52,3 +53,36 @@ fieldset button{
   grid-column: span 2;
 }
 
+/* tasks */
+
+ul.task-list li{
+  list-style: none;
+  display: flex;
+  margin: 1rem 0;
+  gap: 1rem;
+  border-left: 3px solid;
+  border-radius: 3px;
+  height: 2rem;
+  align-items: center;
+}
+
+ul.task-list li[prio=low]{
+  border-color: blue;
+}
+
+ul.task-list li[prio=medium]{
+  border-color: yellow;
+}
+
+ul.task-list li[prio=high]{
+  border-color: red;
+}
+
+li p{
+  margin: 0;
+}
+
+li p.task.title{
+  flex-grow: 1;
+  margin-left: 1rem;
+}

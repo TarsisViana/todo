@@ -23,13 +23,16 @@
 
   <section class="content">
     <div id="content-wrapper">
-      <p class="title">Title</p>
-      <div id="task-container"></div>
+      <p class="content header">Title</p>
+      <div id="task-container">
+        <ul class="task-list">
+        </ul>
+      </div>
       <button id="add-task" class="task add button">Add task</button>
     </div>
   </section>
 
-  <dialog class="task dialog">
+  <dialog class="task add dialog">
     <form method="dialog" id="new-task">
       <fieldset>
         <legend>New Task</legend>
@@ -47,7 +50,7 @@
           <option value="high">High</option>
         </select>
         <button>Add task</button>
-        <button type="button">Cancel</button>
+        <button type="button" class="add task cancel">Cancel</button>
       </fieldset>
     </form>
   </dialog>
@@ -60,6 +63,29 @@
         <label for="title">Title:</label>
         <input id="title" type="text" required>
         <button>Add project</button>
+        <button onsubmit="return">Cancel</button>
+      </fieldset>
+    </form>
+  </dialog>
+
+  <dialog class="task edit dialog">
+    <form method="dialog" id="new-task">
+      <fieldset>
+        <legend>Edit Task</legend>
+        <p>Fill out the information: (all fields required)</p>
+        <label for="title">Title:</label>
+        <input id="title" type="text" required>
+        <label for="details">Details:</label>
+        <textarea id="details" required></textarea>
+        <label for="due">Due date:</label>
+        <input type="date" id="due" required>
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority" required>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button id="save" class="edit task">Save</button>
         <button type="button">Cancel</button>
       </fieldset>
     </form>

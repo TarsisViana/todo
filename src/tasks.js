@@ -1,8 +1,8 @@
 class Tasks{
-  constructor(title, details, due, prio, project){
+  constructor(title, details, dueDate, prio, project){
     this.title = title;
     this.details = details;
-    this.due = due;
+    this.dueDate = dueDate;
     this.prio = prio;
     this.id = Math.random().toString(36).slice(2, 11);
 
