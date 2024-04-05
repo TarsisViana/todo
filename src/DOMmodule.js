@@ -1,5 +1,5 @@
 import {format} from 'date-fns';
-export { updateHome, init, getNewTask, editTask };
+export { updateHome, initListeners, getNewTask, editTask };
 
 const addTaskDialog = document.querySelector('.task.dialog')
 
@@ -35,7 +35,7 @@ function renderTask(task){
   }
 
   title.textContent = task.title;
-  dueDate.textContent = task.dueDate;
+  dueDate.textContent = format(new Date(task.dueDate), 'dd/MM/yy');
   editBtn.textContent = 'Edit';
   deleteBtn.textContent = 'delete';
 
@@ -51,7 +51,7 @@ function renderTask(task){
 
 }
 
-function init(){
+function initListeners(){
   const addTaskbtn = document.querySelector('#add-task');
   const cancelTaskbtn = document.querySelector('button.add.task.cancel');
   const form = addTaskDialog.querySelector('form');
@@ -72,7 +72,7 @@ function getNewTask(form){
   
   const title = elements[1].value;
   const details = elements[2].value;
-  const dueDate = format(elements[3].valueAsDate,'dd/MM/yy');
+  const dueDate = format(elements[3].valueAsDate,'yyyy-MM-dd');
   const prio = elements[4].value;
   
   form.reset();
