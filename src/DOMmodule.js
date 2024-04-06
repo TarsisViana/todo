@@ -1,10 +1,10 @@
 import {format} from 'date-fns';
-export { updateTasklist, initListeners, getNewTask, editTask, showToday };
+export { renderTaskList, initListeners, getNewTask, editTask };
 
 const addTaskDialog = document.querySelector('.task.dialog')
 
 
-function updateTasklist(array){
+function renderTaskList(array){
   const taskList = document.querySelector('ul.task-list');
   taskList.innerHTML = '';
 
@@ -26,6 +26,9 @@ function renderTask(task){
   dueDate.setAttribute('class', 'task due-date');
   editBtn.setAttribute('class', 'task edit-btn');
   deleteBtn.setAttribute('class', 'task delete-btn');
+  listItem.setAttribute('class', 'task');
+  listItem.setAttribute('id', task.id);
+  
   if(task.prio === 'high'){
     listItem.setAttribute('prio', 'high');
   }else if(task.prio === 'medium'){
@@ -84,16 +87,4 @@ function editTask(){
   const title = addTaskDialog.querySelector('#title');
   title.setAttribute('value', 'laksdjflkasdljf');
   addTaskDialog.showModal();
-}
-
-function showToday(array){
-  const today = format(new Date, 'yyyy-MM-dd');
-  const todayArray = [];
-
-  array.forEach((task) =>{
-    if (task.dueDate === today) todayArray.push(task);
-  })
-  
-  console.log('hey');
-  updateTasklist(todayArray);
 }

@@ -2,7 +2,7 @@ import './style.css';
 import {format, compareAsc} from 'date-fns';
 import Task from './tasks';
 import Project from './projects';
-import {updateTasklist, initListeners, getNewTask, editTask, showToday} from './DOMmodule.js'
+import {renderTaskList, initListeners, getNewTask, editTask} from './DOMmodule.js'
 
 
 
@@ -27,12 +27,26 @@ const controller = (()=>{
   
 
 
+
+  function updateTasklist(array){
+    renderTaskList(array);
+    bindTaskListeners();
+  }
+
   function addTask([title,details,date,prio]){
     const task = new Task(title, details, date, prio);
     allTasks.push(task);
     allTasks.sort(sortByDate);
     updateTasklist(allTasks);
     updateStorage(allTasks);
+  }
+
+  function deleteTask(event){
+    const taskId = event.target.parentElement.id;
+    const index = allTasks.findIndex(task => task.id === taskId);
+    allTasks.splice(index,1);
+    updateTasklist(allTasks);
+    console.log(allTasks)
   }
 
   function sortByDate(a,b){
@@ -46,8 +60,6 @@ const controller = (()=>{
     addTask(getNewTask(form.target));
   }
 
-  
-
   function addDefauts(){
     if(localStorage.getItem('allTasks')){
       populateAlltasks();
@@ -58,6 +70,38 @@ const controller = (()=>{
     }  
   }
 
+  
+  function showToday(array){
+    const today = format(new Date, 'yyyy-MM-dd');
+    const todayArray = [];
+  
+    array.forEach((task) =>{
+      if (task.dueDate === today) todayArray.push(task);
+    })
+    updateTasklist(todayArray);
+  }
+
+  function bindTaskListeners(){
+    const domTasks = document.querySelectorAll('li.task');
+
+    domTasks.forEach((listItem) => {
+      listItem.querySelector('.delete-btn').addEventListener('click', deleteTask);
+      listItem.querySelector('.edit-btn').addEventListener('click', editTask);
+    })
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
   //storage functions
   function updateStorage(allTasks){
     localStorage.setItem('allTasks', JSON.stringify(allTasks));
@@ -67,9 +111,6 @@ const controller = (()=>{
     const newArray = JSON.parse(localStorage.getItem('allTasks'));
     allTasks.push(...newArray);
   }
-
-
-  
 
 })();
 
