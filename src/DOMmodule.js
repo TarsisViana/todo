@@ -1,5 +1,5 @@
 import {format} from 'date-fns';
-export { renderTaskList, initListeners, getNewTask, editTask };
+export { renderTaskList, initListeners, getNewTask, editTask, getNewProject };
 
 const addTaskDialog = document.querySelector('.task.dialog')
 
@@ -87,4 +87,24 @@ function editTask(){
   const title = addTaskDialog.querySelector('#title');
   title.setAttribute('value', 'laksdjflkasdljf');
   addTaskDialog.showModal();
+}
+
+function getNewProject(form){
+
+  const name = form.elements[1].value;
+  form.reset();
+
+  return name;
+}
+
+
+function renderProject(project){
+
+  const listItem = document.createElement('li');
+  const name = document.createElement('p');
+  const deleteBtn = document.createElement('button');
+
+  listItem.setAttribute('class', 'project')
+  
+
 }

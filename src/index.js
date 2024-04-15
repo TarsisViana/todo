@@ -2,13 +2,16 @@ import './style.css';
 import {format, compareAsc} from 'date-fns';
 import Task from './tasks';
 import Project from './projects';
-import {renderTaskList, initListeners, getNewTask, editTask} from './DOMmodule.js'
+import {renderTaskList, initListeners, getNewTask, editTask,
+getNewProject} from './DOMmodule.js'
 
 
 
 const controller = (()=>{
   initListeners()
   const allTasks = [];
+  const allProjects = [];
+
 
   //add default tasks, inicialize screen
   addDefauts();
@@ -20,11 +23,13 @@ const controller = (()=>{
   const editForm = document.querySelector('form#edit-task');
   const homeBtn = document.querySelector('#home-btn');
   const todayBtn = document.querySelector('#today-btn');
+  const addProjectBtn = document.querySelector('#add-project');
 
   taskForm.addEventListener('submit', taskformHandler);
+  projectForm.addEventListener('submit', projectFormHandler)
   homeBtn.addEventListener('click', () => updateTasklist(allTasks));
   todayBtn.addEventListener('click', () => showToday(allTasks));
-  
+  addProjectBtn.addEventListener('click',addNewProject)
 
 
 
@@ -38,7 +43,7 @@ const controller = (()=>{
     allTasks.push(task);
     allTasks.sort(sortByDate);
     updateTasklist(allTasks);
-    updateStorage(allTasks);
+    updateTaskStorage(allTasks);
   }
 
   function deleteTask(event){
@@ -46,7 +51,7 @@ const controller = (()=>{
     const index = allTasks.findIndex(task => task.id === taskId);
     allTasks.splice(index,1);
     updateTasklist(allTasks);
-    console.log(allTasks)
+    updateTaskStorage(allTasks);
   }
 
   function sortByDate(a,b){
@@ -66,7 +71,7 @@ const controller = (()=>{
       updateTasklist(allTasks);
     }else{
       addTask(['Make bed','', format(new Date, 'yyyy-MM-dd'), 'low']);
-      addTask(['Do the dishes', 'it stinks', '2024-04-06']);
+      addTask(['Do the dishes', 'it stinks', format(new Date, 'yyyy-MM-dd')]);
     }  
   }
 
@@ -91,19 +96,39 @@ const controller = (()=>{
   }
   
 
+  function addNewProject(name){
+    const project = new Project(name);
+    allProjects.push(project);
+    updateProjectList(allProjects);
+    updateProjectStorage(allProjects);
+  }
 
 
+  function projectFormHandler(form){
+    addNewProject(getNewproject(form.target));
+  }
 
+  function updateProjectList(array){
+    renderProjectList(array);
+    bindProjectListeners();
+  }
 
+  function bindProjectListeners(){
+    const projList = document.querySelector('.project-list');
 
+    projList.addEventListener('click', deleteProject)
+  }
 
-
-
-
-
+  function deleteProject(e){
+    if (e.target.classList.value === 'project delete'){
+      // to be continued
+    }
+    
+    
+  }
 
   //storage functions
-  function updateStorage(allTasks){
+  function updateTaskStorage(allTasks){
     localStorage.setItem('allTasks', JSON.stringify(allTasks));
   };
 

@@ -34,6 +34,21 @@ div#content-wrapper{
   max-width: 800px;
   margin: 1rem auto;
   display: grid;
+  padding: 0 1rem;
+}
+
+/* project list  */
+
+ul.project-list{
+  list-style: none;
+  padding: 0;
+  margin-left: 1rem;
+}
+
+ul.project-list li{
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
 }
 
 /* dialog forms */
@@ -54,6 +69,11 @@ fieldset button{
 }
 
 /* tasks */
+
+ul.task-list{
+  padding: 0;
+
+}
 
 ul.task-list li{
   list-style: none;
