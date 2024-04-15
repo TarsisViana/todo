@@ -3,7 +3,7 @@ import {format, compareAsc} from 'date-fns';
 import Task from './tasks';
 import Project from './projects';
 import {renderTaskList, initListeners, getNewTask, editTask,
-getNewProject} from './DOMmodule.js'
+getNewProject, renderProjectList} from './DOMmodule.js'
 
 
 
@@ -23,13 +23,13 @@ const controller = (()=>{
   const editForm = document.querySelector('form#edit-task');
   const homeBtn = document.querySelector('#home-btn');
   const todayBtn = document.querySelector('#today-btn');
-  const addProjectBtn = document.querySelector('#add-project');
+  
 
   taskForm.addEventListener('submit', taskformHandler);
   projectForm.addEventListener('submit', projectFormHandler)
   homeBtn.addEventListener('click', () => updateTasklist(allTasks));
   todayBtn.addEventListener('click', () => showToday(allTasks));
-  addProjectBtn.addEventListener('click',addNewProject)
+  
 
 
 
@@ -72,6 +72,10 @@ const controller = (()=>{
     }else{
       addTask(['Make bed','', format(new Date, 'yyyy-MM-dd'), 'low']);
       addTask(['Do the dishes', 'it stinks', format(new Date, 'yyyy-MM-dd')]);
+    }
+    if(localStorage.getItem('allProjects')){
+      populateAllProjects();
+      updateProjectList(allProjects);
     }  
   }
 
@@ -105,7 +109,8 @@ const controller = (()=>{
 
 
   function projectFormHandler(form){
-    addNewProject(getNewproject(form.target));
+    console.log(form.target)
+    addNewProject(getNewProject(form.target));
   }
 
   function updateProjectList(array){
@@ -119,12 +124,15 @@ const controller = (()=>{
     projList.addEventListener('click', deleteProject)
   }
 
+
   function deleteProject(e){
     if (e.target.classList.value === 'project delete'){
-      // to be continued
+      const projId = e.target.parentElement.id;
+      const index = allProjects.findIndex(project => project.id === projId);
+      allProjects.splice(index,1);
+      updateProjectList(allProjects);
+      updateProjectStorage(allProjects);
     }
-    
-    
   }
 
   //storage functions
@@ -135,6 +143,15 @@ const controller = (()=>{
   function populateAlltasks(){
     const newArray = JSON.parse(localStorage.getItem('allTasks'));
     allTasks.push(...newArray);
+  }
+  
+  function updateProjectStorage(array){
+    localStorage.setItem('allProjects', JSON.stringify(array));
+  }
+
+  function populateAllProjects(){
+    const newArray = JSON.parse(localStorage.getItem('allProjects'));
+    allProjects.push(...newArray);
   }
 
 })();

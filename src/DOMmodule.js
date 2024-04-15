@@ -1,7 +1,8 @@
-import {format} from 'date-fns';
-export { renderTaskList, initListeners, getNewTask, editTask, getNewProject };
+import {add, format} from 'date-fns';
+export { renderTaskList, initListeners, getNewTask, editTask, getNewProject, renderProjectList };
 
-const addTaskDialog = document.querySelector('.task.dialog')
+const addTaskDialog = document.querySelector('.task.dialog');
+const addProjectDialog = document.querySelector('.project.dialog');
 
 
 function renderTaskList(array){
@@ -56,23 +57,26 @@ function renderTask(task){
 
 function initListeners(){
   const addTaskbtn = document.querySelector('#add-task');
-  const cancelTaskbtn = document.querySelector('button.add.task.cancel');
-  const form = addTaskDialog.querySelector('form');
+  const cancelTaskBtn = document.querySelector('button.add.task.cancel');
+  const addProjectBtn = document.querySelector('#add-project');
 
   addTaskbtn.addEventListener('click', () => {
     addTaskDialog.showModal();
   });
 
-  cancelTaskbtn.addEventListener('click', () => {
+  cancelTaskBtn.addEventListener('click', () => {
     addTaskDialog.close();
     form.reset();
   })
 
+  addProjectBtn.addEventListener('click', () =>{
+    addProjectDialog.showModal();
+  } )
 }
 
 function getNewTask(form){
+
   const elements = form.elements;
-  
   const title = elements[1].value;
   const details = elements[2].value;
   const dueDate = format(elements[3].valueAsDate,'yyyy-MM-dd');
@@ -101,10 +105,29 @@ function getNewProject(form){
 function renderProject(project){
 
   const listItem = document.createElement('li');
-  const name = document.createElement('p');
+  const name = document.createElement('button');
   const deleteBtn = document.createElement('button');
 
-  listItem.setAttribute('class', 'project')
-  
+  listItem.setAttribute('class', 'project');
+  listItem.setAttribute('id', project.id);
+  name.setAttribute('class', 'project select button');
+  deleteBtn.setAttribute('class', 'project delete');
 
+
+  name.textContent = project.name;
+  deleteBtn.textContent = 'x';
+
+  listItem.appendChild(name);
+  listItem.appendChild(deleteBtn);
+  
+  return listItem;
+}
+
+function renderProjectList(array){
+  const projectList = document.querySelector('ul.project-list');
+  projectList.innerHTML = '';
+
+  array.forEach( project => {
+    projectList.appendChild(renderProject(project)); 
+  });
 }

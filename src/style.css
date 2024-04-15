@@ -51,6 +51,15 @@ ul.project-list li{
   margin: 0;
 }
 
+.project.select.button{
+  flex-grow: 1;
+  background-color: white;
+  border: none;
+  text-align: left;
+} 
+
+
+
 /* dialog forms */
 
 fieldset{
