@@ -1,9 +1,9 @@
 import {add, format} from 'date-fns';
-export { renderTaskList, initListeners, getNewTask, editTask, getNewProject, renderProjectList };
+export { renderTaskList, initListeners, getNewTask, editTaskDom, getNewProject, renderProjectList };
 
 const addTaskDialog = document.querySelector('.task.dialog');
 const addProjectDialog = document.querySelector('.project.dialog');
-
+const editTaskDialog = document.querySelector('.edit.task.dialog')
 
 function renderTaskList(array){
   const taskList = document.querySelector('ul.task-list');
@@ -59,14 +59,22 @@ function initListeners(){
   const addTaskbtn = document.querySelector('#add-task');
   const cancelTaskBtn = document.querySelector('button.add.task.cancel');
   const addProjectBtn = document.querySelector('#add-project');
+  const cancelEditBtn = document.querySelector('.cancel.edit')
 
   addTaskbtn.addEventListener('click', () => {
     addTaskDialog.showModal();
   });
 
-  cancelTaskBtn.addEventListener('click', () => {
-    addTaskDialog.close();
+  cancelTaskBtn.addEventListener('click', (e) => {
+    const form = e.target.parentElement.parentElement;
     form.reset();
+    addTaskDialog.close();
+  })
+
+  cancelEditBtn.addEventListener('click', (e) => {
+    const form = e.target.parentElement.parentElement;
+    form.reset();
+    editTaskDialog.close();
   })
 
   addProjectBtn.addEventListener('click', () =>{
@@ -87,10 +95,19 @@ function getNewTask(form){
   return [title, details, dueDate, prio];
 }
 
-function editTask(){
-  const title = addTaskDialog.querySelector('#title');
-  title.setAttribute('value', 'laksdjflkasdljf');
-  addTaskDialog.showModal();
+function editTaskDom(task){
+
+  console.log(task)
+  const title = editTaskDialog.querySelector('#title');
+  const details = editTaskDialog.querySelector('#details');
+  const dueDate = editTaskDialog.querySelector('#due');
+  const prio = editTaskDialog.querySelector('#piority');
+
+  title.value = task.title;
+  details.value = task.details;
+  dueDate.value = task.dueDate;
+
+  editTaskDialog.showModal();
 }
 
 function getNewProject(form){

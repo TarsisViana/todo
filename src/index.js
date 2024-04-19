@@ -2,7 +2,7 @@ import './style.css';
 import {format, compareAsc} from 'date-fns';
 import Task from './tasks';
 import Project from './projects';
-import {renderTaskList, initListeners, getNewTask, editTask,
+import {renderTaskList, initListeners, getNewTask, editTaskDom,
 getNewProject, renderProjectList} from './DOMmodule.js'
 
 
@@ -11,6 +11,7 @@ const controller = (()=>{
   initListeners()
   const allTasks = [];
   const allProjects = [];
+  let taskId;
 
 
   //add default tasks, inicialize screen
@@ -26,7 +27,8 @@ const controller = (()=>{
   
 
   taskForm.addEventListener('submit', taskformHandler);
-  projectForm.addEventListener('submit', projectFormHandler)
+  projectForm.addEventListener('submit', projectFormHandler);
+  editForm.addEventListener('submit', editFormhandler);
   homeBtn.addEventListener('click', () => updateTasklist(allTasks));
   todayBtn.addEventListener('click', () => showToday(allTasks));
   
@@ -54,6 +56,24 @@ const controller = (()=>{
     updateTaskStorage(allTasks);
   }
 
+  function taskformHandler(e){
+    addTask(getNewTask(e.target));
+  }
+
+  function editFormhandler(e){
+    
+    //delete old task
+    const index = allTasks.findIndex(task => task.id === taskId);
+    allTasks.splice(index,1);
+    // updateTasklist(allTasks);
+    // updateTaskStorage(allTasks);
+
+    // add new task
+    addTask(getNewTask(e.target));
+
+  }
+
+
   function sortByDate(a,b){
     const dateA = new Date(a.dueDate);
     const dateB = new Date(b.dueDate);
@@ -61,9 +81,7 @@ const controller = (()=>{
     return compareAsc(dateA, dateB);
   }
 
-  function taskformHandler(form){
-    addTask(getNewTask(form.target));
-  }
+  
 
   function addDefauts(){
     if(localStorage.getItem('allTasks')){
@@ -95,10 +113,14 @@ const controller = (()=>{
 
     domTasks.forEach((listItem) => {
       listItem.querySelector('.delete-btn').addEventListener('click', deleteTask);
-      listItem.querySelector('.edit-btn').addEventListener('click', editTask);
+      listItem.querySelector('.edit-btn').addEventListener('click', (e) =>{
+        editTaskDom(allTasks.find(task => task.id === e.target.parentElement.id));
+        taskId = e.target.parentElement.Id;
+      });
     })
   }
   
+  // Project logic
 
   function addNewProject(name){
     const project = new Project(name);
@@ -109,7 +131,6 @@ const controller = (()=>{
 
 
   function projectFormHandler(form){
-    console.log(form.target)
     addNewProject(getNewProject(form.target));
   }
 

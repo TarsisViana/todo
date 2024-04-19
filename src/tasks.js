@@ -14,7 +14,7 @@ class Task{
   getId(){
     return this.id
   }
-  
+
 }
 
 export default Task;

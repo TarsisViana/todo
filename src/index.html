@@ -52,7 +52,7 @@
         <label for="details">Details:</label>
         <textarea id="details" required></textarea>
         <label for="due">Due date:</label>
-        <input type="date" id="due" required>
+        <input type="date" data-date-format ="DD MM YYYY" id="due" required>
         <label for="priority">Priority</label>
         <select name="priority" id="priority" required>
           <option value="low">Low</option>
@@ -96,7 +96,7 @@
           <option value="high">High</option>
         </select>
         <button id="save" class="edit task">Save</button>
-        <button type="button">Cancel</button>
+        <button type="button" class="edit task cancel">Cancel</button>
       </fieldset>
     </form>
   </dialog>
