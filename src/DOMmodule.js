@@ -1,5 +1,5 @@
 import {add, format} from 'date-fns';
-export { renderTaskList, initListeners, getNewTask, editTaskDom, getNewProject, renderProjectList };
+export { renderTaskList, initListeners, getNewTask, editTaskDom, getNewProject, renderProjectList, showTaskDetail };
 
 const addTaskDialog = document.querySelector('.task.dialog');
 const addProjectDialog = document.querySelector('.project.dialog');
@@ -22,6 +22,8 @@ function renderTask(task){
   const dueDate = document.createElement('p'); 
   const editBtn = document.createElement('button');
   const deleteBtn = document.createElement('button');
+  const expandBtn = document.createElement('button');
+  const detailsDialog = document.createElement('dialog');
  
   title.setAttribute('class', 'task title');
   dueDate.setAttribute('class', 'task due-date');
@@ -29,6 +31,8 @@ function renderTask(task){
   deleteBtn.setAttribute('class', 'task delete-btn');
   listItem.setAttribute('class', 'task');
   listItem.setAttribute('id', task.id);
+  expandBtn.setAttribute('class', 'task expand');
+  detailsDialog.setAttribute('class', 'task details');
   
   if(task.prio === 'high'){
     listItem.setAttribute('prio', 'high');
@@ -42,8 +46,12 @@ function renderTask(task){
   dueDate.textContent = format(new Date(task.dueDate), 'dd/MM/yy');
   editBtn.textContent = 'Edit';
   deleteBtn.textContent = 'delete';
+  expandBtn.textContent = '···';
+  detailsDialog.textContent = task.details;
 
 
+  title.appendChild(expandBtn);
+  title.appendChild(detailsDialog);
   listItem.appendChild(title);
   listItem.appendChild(dueDate);
   listItem.appendChild(editBtn);
@@ -53,6 +61,11 @@ function renderTask(task){
 
   return listItem;
 
+}
+
+function  showTaskDetail(e){
+  const detailsDialog = e.target.parentElement.querySelector('dialog');
+  detailsDialog.toggleAttribute('open');
 }
 
 function initListeners(){

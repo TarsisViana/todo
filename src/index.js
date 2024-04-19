@@ -3,7 +3,7 @@ import {format, compareAsc} from 'date-fns';
 import Task from './tasks';
 import Project from './projects';
 import {renderTaskList, initListeners, getNewTask, editTaskDom,
-getNewProject, renderProjectList} from './DOMmodule.js'
+getNewProject, renderProjectList, showTaskDetail} from './DOMmodule.js'
 
 
 
@@ -88,7 +88,7 @@ const controller = (()=>{
       populateAlltasks();
       updateTasklist(allTasks);
     }else{
-      addTask(['Make bed','', format(new Date, 'yyyy-MM-dd'), 'low']);
+      addTask(['Make bed','just do it', format(new Date, 'yyyy-MM-dd'), 'low']);
       addTask(['Do the dishes', 'it stinks', format(new Date, 'yyyy-MM-dd')]);
     }
     if(localStorage.getItem('allProjects')){
@@ -117,6 +117,7 @@ const controller = (()=>{
         editTaskDom(allTasks.find(task => task.id === e.target.parentElement.id));
         taskId = e.target.parentElement.Id;
       });
+      listItem.querySelector('.task.expand').addEventListener('click', showTaskDetail);
     })
   }
   
