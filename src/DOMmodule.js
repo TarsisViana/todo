@@ -5,13 +5,22 @@ const addTaskDialog = document.querySelector('.task.dialog');
 const addProjectDialog = document.querySelector('.project.dialog');
 const editTaskDialog = document.querySelector('.edit.task.dialog')
 
-function renderTaskList(array){
+function renderTaskList(array, title){
   const taskList = document.querySelector('ul.task-list');
+  const pageTitle = document.querySelector('p.content.header');
+
   taskList.innerHTML = '';
 
   array.forEach( task => {
     taskList.appendChild(renderTask(task)); 
   });
+
+  if(title === 'HomeDefault') pageTitle.innerHTML = 'Home';
+  else if(title === 'TodayDefault') pageTitle.innerHTML = 'Today';
+  else if(title === 'ThisWeekDefault') pageTitle.innerHTML = 'This Week';
+  else if(!title) pageTitle.innerHTML = 'Home';
+  else pageTitle.textContent = title;
+
 }
 
 
@@ -102,10 +111,11 @@ function getNewTask(form){
   const details = elements[2].value;
   const dueDate = format(elements[3].valueAsDate,'yyyy-MM-dd');
   const prio = elements[4].value;
+  const pageTitle = document.querySelector('p.content.header').textContent;
   
   form.reset();
 
-  return [title, details, dueDate, prio];
+  return [title, details, dueDate, prio, pageTitle];
 }
 
 function editTaskDom(task){

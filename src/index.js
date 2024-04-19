@@ -30,23 +30,36 @@ const controller = (()=>{
   taskForm.addEventListener('submit', taskformHandler);
   projectForm.addEventListener('submit', projectFormHandler);
   editForm.addEventListener('submit', editFormhandler);
-  homeBtn.addEventListener('click', () => updateTasklist(allTasks));
+  homeBtn.addEventListener('click', () => updateTasklist(allTasks, 'HomeDefault'));
   todayBtn.addEventListener('click', () => showToday(allTasks));
   thisWeekBtn.addEventListener('click', () => showThisWeek(allTasks));
 
 
 
-  function updateTasklist(array){
-    renderTaskList(array);
+  function updateTasklist(array,title){
+    renderTaskList(array,title);
     bindTaskListeners();
   }
 
-  function addTask([title,details,date,prio]){
-    const task = new Task(title, details, date, prio);
-    allTasks.push(task);
-    allTasks.sort(sortByDate);
-    updateTasklist(allTasks);
-    updateTaskStorage(allTasks);
+  function addTask([title,details,date,prio,pageTitle]){
+
+    // test for project
+    if( pageTitle == 'Home' || pageTitle == 'Today' || pageTitle == 'This Week'){
+      var task = new Task(title, details, date, prio);
+
+      allTasks.push(task);
+      allTasks.sort(sortByDate);
+      updateTasklist(allTasks);
+      updateTaskStorage(allTasks);
+    }else{
+      var task = new Task(title, details, date, prio, pageTitle);
+      console.log(task);
+
+      allTasks.push(task);
+      allTasks.sort(sortByDate);
+      showProject(allTasks, pageTitle);
+      updateTaskStorage(allTasks);
+    }
   }
 
   function deleteTask(event){
@@ -103,12 +116,12 @@ const controller = (()=>{
     array.forEach((task) =>{
       if (task.dueDate === today) todayArray.push(task);
     })
-    updateTasklist(todayArray);
+    updateTasklist(todayArray, 'TodayDefault');
   }
 
   function showThisWeek(array){
     const weekArray = array.filter((task) => isThisWeek(new Date(task.dueDate)));
-    updateTasklist(weekArray);
+    updateTasklist(weekArray, 'ThisWeekDefault');
   }
 
   function bindTaskListeners(){
@@ -131,6 +144,7 @@ const controller = (()=>{
     allProjects.push(project);
     updateProjectList(allProjects);
     updateProjectStorage(allProjects);
+    showProject([], name);
   }
 
 
@@ -146,11 +160,11 @@ const controller = (()=>{
   function bindProjectListeners(){
     const projList = document.querySelector('.project-list');
 
-    projList.addEventListener('click', deleteProject)
+    projList.addEventListener('click', projectListBtnHandler)
   }
 
 
-  function deleteProject(e){
+  function projectListBtnHandler(e){
     if (e.target.classList.value === 'project delete'){
       const projId = e.target.parentElement.id;
       const index = allProjects.findIndex(project => project.id === projId);
@@ -158,6 +172,19 @@ const controller = (()=>{
       updateProjectList(allProjects);
       updateProjectStorage(allProjects);
     }
+    else if(e.target.classList.value === 'project select button'){
+      const proj = e.target.textContent;
+      showProject(allTasks, proj);
+    }
+  }
+
+  function showProject(array, project){
+    const projectArray = [];
+
+    array.forEach((task) =>{
+      if (task.project === project) projectArray.push(task);
+    })
+    updateTasklist(projectArray, project);
   }
 
   //storage functions
