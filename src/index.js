@@ -1,5 +1,5 @@
 import './style.css';
-import {format, compareAsc} from 'date-fns';
+import {format, compareAsc, isThisWeek} from 'date-fns';
 import Task from './tasks';
 import Project from './projects';
 import {renderTaskList, initListeners, getNewTask, editTaskDom,
@@ -24,6 +24,7 @@ const controller = (()=>{
   const editForm = document.querySelector('form#edit-task');
   const homeBtn = document.querySelector('#home-btn');
   const todayBtn = document.querySelector('#today-btn');
+  const thisWeekBtn = document.querySelector('#week-btn');
   
 
   taskForm.addEventListener('submit', taskformHandler);
@@ -31,7 +32,7 @@ const controller = (()=>{
   editForm.addEventListener('submit', editFormhandler);
   homeBtn.addEventListener('click', () => updateTasklist(allTasks));
   todayBtn.addEventListener('click', () => showToday(allTasks));
-  
+  thisWeekBtn.addEventListener('click', () => showThisWeek(allTasks));
 
 
 
@@ -60,13 +61,10 @@ const controller = (()=>{
     addTask(getNewTask(e.target));
   }
 
-  function editFormhandler(e){
-    
+  function editFormhandler(e){ 
     //delete old task
     const index = allTasks.findIndex(task => task.id === taskId);
     allTasks.splice(index,1);
-    // updateTasklist(allTasks);
-    // updateTaskStorage(allTasks);
 
     // add new task
     addTask(getNewTask(e.target));
@@ -108,6 +106,11 @@ const controller = (()=>{
     updateTasklist(todayArray);
   }
 
+  function showThisWeek(array){
+    const weekArray = array.filter((task) => isThisWeek(new Date(task.dueDate)));
+    updateTasklist(weekArray);
+  }
+
   function bindTaskListeners(){
     const domTasks = document.querySelectorAll('li.task');
 
@@ -115,7 +118,7 @@ const controller = (()=>{
       listItem.querySelector('.delete-btn').addEventListener('click', deleteTask);
       listItem.querySelector('.edit-btn').addEventListener('click', (e) =>{
         editTaskDom(allTasks.find(task => task.id === e.target.parentElement.id));
-        taskId = e.target.parentElement.Id;
+        taskId = e.target.parentElement.id;
       });
       listItem.querySelector('.task.expand').addEventListener('click', showTaskDetail);
     })

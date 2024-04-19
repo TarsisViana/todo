@@ -110,7 +110,6 @@ function getNewTask(form){
 
 function editTaskDom(task){
 
-  console.log(task)
   const title = editTaskDialog.querySelector('#title');
   const details = editTaskDialog.querySelector('#details');
   const dueDate = editTaskDialog.querySelector('#due');
